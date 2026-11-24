@@ -198,7 +198,7 @@ function moveImage() {
 }
 
 function cvText() {
-  const lines = ["Hi Anna! I'd like a canvas.", "", `Kind: ${{ abstract: "Abstract", beach: "Sea style", photo: "Custom gift (my photo)", board: "Wooden cutting board" }[cv.kind]}`, `Size: ${cv.w} x ${cv.h} cm`];
+  const lines = [hello("canvas"), "", `Kind: ${{ abstract: "Abstract", beach: "Sea style", photo: "Custom gift (my photo)", board: "Wooden cutting board" }[cv.kind]}`, `Size: ${cv.w} x ${cv.h} cm`];
   if (OCCASION) lines.splice(3, 0, `Occasion: ${OCCASION}`);
   if (cv.shapePhoto) lines.push("(I'll attach a picture of the shape I want)");
   if (cv.kind === "beach") { const o = cv.sea; lines.push(`Direction: ${cv.h >= cv.w ? "portrait" : "horizontal"}`, `Waves: ${["", "calm", "some waves", "lots of waves"][o.waves]}`, `Water: ${o.water === "deep" ? "deeper blue" : "lighter blue"}`, `Sand: ${{ none: "no sand", low: "a little", mid: "more sand" }[o.sand]}`, `On the sand: ${[o.star && "starfish", o.shell && "shells", o.boat && "little boat"].filter(Boolean).join(", ") || "nothing"}`); }
@@ -286,7 +286,8 @@ document.addEventListener("click", (e) => {
   const b = e.target.closest("[data-kind],[data-size],[data-shape],#cv-send");
   if (!b) return;
   if (b.id === "cv-send") {
-    copyText(cvText()).then(() => cvToast(C("copied"))).catch(() => cvToast(C("copyFail")));
+    e.preventDefault();
+    openSend(cvText());
     return;
   }
   if (b.dataset.kind) cv.kind = b.dataset.kind;

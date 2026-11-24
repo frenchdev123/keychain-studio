@@ -9,7 +9,9 @@ const CONFIG = {
   /* ---- Shop details ---- */
   shopName: "Resincraftcode",
   instagram: "resincraftcode",
-  facebook: "https://www.facebook.com/search/top?q=Resincraftcode%20Anna",   // ✏️ paste your real Facebook page link
+  facebook: "",      // ✏️ paste your real Facebook page link, e.g. "https://www.facebook.com/resincraftcode" (hidden while empty)
+  whatsapp: "",      // ✏️ WhatsApp number with country code, e.g. "+66 81 234 5678" (the WhatsApp button appears when filled)
+  line: "",          // ✏️ LINE ID: "@yourshop" for a LINE Official Account, or a personal LINE ID (the LINE button appears when filled)
 
   readyTime: "about 5–7 days",
   readyTime_th: "ประมาณ 5–7 วัน",

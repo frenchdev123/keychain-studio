@@ -69,9 +69,7 @@ document.addEventListener("click", (e) => {
     document.getElementById("cart-btn").classList.add("bump");
     setTimeout(() => document.getElementById("cart-btn").classList.remove("bump"), 700);
   } else {
-    const text = `Hi Anna! I'd like to order 1 piece 💛\n\n#1 ${item.title}\n${item.text}`;
-    copyText(text).catch(() => {});
-    window.open(igLink(), "_blank", "noopener");
+    openSend(`${hello("order", 1)}\n\n#1 ${item.title}\n${item.text}`);
   }
 });
 
@@ -245,8 +243,8 @@ document.addEventListener("click", (e) => {
     const text = (document.getElementById("fb-text").value || "").trim(), name = (document.getElementById("fb-name").value || "").trim();
     const note = document.getElementById("fb-note");
     if (!text) { note.textContent = FB("empty"); return; }
-    const msg = `Feedback for Resincraftcode 💛${fbStars ? "\nRating: " + "★".repeat(fbStars) + "☆".repeat(5 - fbStars) : ""}${name ? "\nFrom: " + name : ""}\n\n${text}`;
-    copyText(msg).catch(() => {}); note.textContent = FB("done"); window.open(igLink(), "_blank", "noopener");
+    const msg = `${hello("feedback")}${fbStars ? "\nRating: " + "★".repeat(fbStars) + "☆".repeat(5 - fbStars) : ""}${name ? "\nFrom: " + name : ""}\n\n${text}`;
+    openSend(msg, { feedback: true, onSent: () => { note.textContent = FB("done"); } });
   }
 });
 
@@ -259,7 +257,7 @@ function ideaText() {
     : "My own shape (from my photo)";
   const size = tr(IDEA.sizes.find((s) => s.id === idea.size), "name", "en");
   const lines = [
-    "Hi Anna! I have an idea for a custom keychain.",
+    hello("idea"),
     "",
     "Idea: " + (idea.describe.trim() || "(see my photo)"),
     shape,
@@ -366,8 +364,9 @@ function bindIdea() {
       root.querySelector("textarea[name=describe]").focus();
       return;
     }
+    e.preventDefault();
     err.textContent = "";
-    copyText(ideaText()).then(() => toast(I("copied"))).catch(() => toast(I("copyFail")));
+    openSend(ideaText());
   });
 }
 

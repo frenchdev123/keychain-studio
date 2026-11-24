@@ -77,7 +77,7 @@ function render() {
 }
 function redrawStage() { document.getElementById("cl-stage").innerHTML = svg(); }
 function orderText() {
-  const lines = ["Hi Anna! I'd like a photo canvas 💛", "", `Canvas size: ${S.w} × ${S.h} cm`, `Photos: ${S.items.length}`];
+  const lines = [hello("photo"), "", `Canvas size: ${S.w} × ${S.h} cm`, `Photos: ${S.items.length}`];
   S.items.forEach((it, i) => lines.push(`#${i + 1} ${it.name}${it.charm ? " (3D charm)" : ""}: ${it.charm ? "" : it.shape + ", "}${it.w.toFixed(1)} cm wide, at ${(it.x / S.w * 100).toFixed(0)}% across and ${(it.y / S.h * 100).toFixed(0)}% down`));
   lines.push(`Background: ${S.mode === "gradient" ? "gradient " + S.bg + " to " + S.bg2 : S.bg}`);
   if (S.glit) lines.push("Glitter: " + S.glit);
@@ -115,7 +115,7 @@ root.addEventListener("input", (e) => {
 });
 root.addEventListener("click", (e) => {
   const b = e.target.closest("button"), it = S.items[S.sel];
-  if (e.target.closest("#cl-send")) { copyText(orderText()).then(() => toastMsg(L("copied"))).catch(() => {}); return; }
+  if (e.target.closest("#cl-send")) { e.preventDefault(); openSend(orderText()); return; }
   if (!b) return;
   if (b.dataset.size) { const [w, h] = b.dataset.size.split("x").map(Number); S.w = w; S.h = h; render(); }
   else if (b.dataset.bg) { S.bg = b.dataset.bg; render(); }

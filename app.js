@@ -286,9 +286,9 @@ function shareLink() {
   return location.href.split("#")[0] + "#d=" + encodeURIComponent(encodeDesign(d));
 }
 
-// The message Anna receives is always in English, so she can read every order the same way.
+// The details Anna receives are always in English, so she can read every order the same way (only the greeting follows the customer's language).
 function orderText() {
-  const lines = ["Hi Anna! I designed a keychain on Keychain Studio 💛", "Design code: " + designCode(design), ""];
+  const lines = [hello("keychain"), "Design code: " + designCode(design), ""];
   for (const [k, v] of summaryLines(design, "en")) lines.push(`${k}: ${v}`);
   if (SHOW_PRICES) lines.push("", "Estimated price: " + money(priceOf(design, "en").total));
   if (design.style === "ink") lines.push("Ink note: the ink spreads while it cures, so the finished piece will not look exactly like the preview.");
@@ -2434,7 +2434,7 @@ function addDesignToCart() {
   toast(ok ? U("addedCart") : U("cartFail"));
 }
 $("bar-cart").addEventListener("click", addDesignToCart);
-$("bar-buy").addEventListener("click", () => { copyText(orderText()).catch(() => {}); window.open(igLink(), "_blank", "noopener"); });
+$("bar-buy").addEventListener("click", () => openSend(orderText()));
 els.panel.addEventListener("click", (e) => {
   const gl = e.target.closest("[data-glitter]");
   if (gl) {
@@ -2642,9 +2642,8 @@ els.panel.addEventListener("click", (e) => {
     renderPreview();
     swing();
   } else if (action === "dm") {
-    copyText(orderText())
-      .then(() => toast(U("copied")))
-      .catch(() => toast(U("copyFail")));
+    e.preventDefault();
+    openSend(orderText());
   } else if (action === "copylink") {
     copyText(shareLink())
       .then(() => toast(U("linkCopied")))

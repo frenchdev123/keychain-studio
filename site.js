@@ -49,10 +49,13 @@ new MutationObserver(() => startSlides()).observe(document.documentElement, { ch
 
 /* ---------------- Shop buy buttons ---------------- */
 const DIGITAL = ["g-beach-lounger", "g-birthday-canvas", "g-bookmark", "g-canvas", "g-chess-sand", "g-coaster-ink", "g-coaster-sea", "g-coaster-stone", "g-coffee-art", "g-copper", "g-domino", "g-feather", "g-feather-canvas", "g-fruit-bowl", "g-gold-chess", "g-hairpin", "g-key-a-star", "g-key-e", "g-key-es", "g-key-k", "g-key-tail", "g-key-w", "g-lychee-bowl", "g-mosaic-bookmark", "g-night-coaster", "g-night-round", "g-nuts-dish", "g-paddle", "g-paint1", "g-paint3", "g-paint4", "g-pen", "g-pen-blue", "g-pen-ink", "g-pinkboard", "g-platter", "g-plum", "g-purple-pen", "g-purple-plate", "g-round", "g-round-pendant", "g-ruffle-bowl", "g-sea-shells", "g-sea-wide", "g-tail", "g-tealight", "g-tree", "g-wood-ocean-stand", "g-woodtray"];
+const priceTag = (o) => (CONFIG.showPrices && o && o.price ? `<span class="price-tag">${t("shop.from", { price: money(o.price) })}</span>` : "");
+const CART_ICON = `<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.2 10.2a1.5 1.5 0 0 0 1.5 1.2h7.9a1.5 1.5 0 0 0 1.5-1.1L20 8H6.2"/><circle cx="9.5" cy="19.5" r="1.3"/><circle cx="16.5" cy="19.5" r="1.3"/><path d="M13 7.5V3.5M11 5.5h4"/></svg>`;
 function buyBtns(id, name, img, section) {
   const key = (img || "").split("/").pop().replace(/\.\w+$/, "");
   const dig = DIGITAL.includes(key) && section !== "preset" ? `<a class="dig-link" href="design.html?gallery=${key}">${t("shop.digital", null)}</a>` : "";
-  return `<div class="buy"><button type="button" class="btn btn-line small" data-buy="cart" data-name="${esc(name)}" data-img="${esc(img)}" data-id="${esc(id)}" data-sec="${esc(section)}">${t("shop.addCart", null)}</button><button type="button" class="btn btn-ink small" data-buy="now" data-name="${esc(name)}" data-img="${esc(img)}" data-id="${esc(id)}" data-sec="${esc(section)}">${t("shop.buyNow", null)}</button>${dig}</div>`;
+  const data = `data-name="${esc(name)}" data-img="${esc(img)}" data-id="${esc(id)}" data-sec="${esc(section)}"`;
+  return `<div class="buy"><button type="button" class="btn btn-ink small buy-now" data-buy="now" ${data}>${t("shop.buyNow", null)}</button><button type="button" class="buy-cart" data-buy="cart" ${data} aria-label="${esc(t("shop.addCart", null))}" title="${esc(t("shop.addCart", null))}">${CART_ICON}</button>${dig}</div>`;
 }
 function buyItem(el) {
   const link = el.dataset.sec === "preset" ? `\nOpen the design: ${location.href.split("#")[0].replace(/[^/]*$/, "")}design.html?preset=${el.dataset.id}` : "";
@@ -64,14 +67,12 @@ document.addEventListener("click", (e) => {
   const item = buyItem(b);
   if (b.dataset.buy === "cart") {
     addToCart(item);
-    b.textContent = "✓ " + t("shop.added", null);
-    setTimeout(() => (b.textContent = t("shop.addCart", null)), 1600);
+    b.classList.add("added"); b.textContent = "✓";
+    setTimeout(() => { b.classList.remove("added"); b.innerHTML = CART_ICON; }, 1600);
     document.getElementById("cart-btn").classList.add("bump");
     setTimeout(() => document.getElementById("cart-btn").classList.remove("bump"), 700);
   } else {
-    const text = `Hi Anna! I'd like to order 1 piece 💛\n\n#1 ${item.title}\n${item.text}`;
-    copyText(text).catch(() => {});
-    window.open(igLink(), "_blank", "noopener");
+    openSend(`${hello("order", 1)}\n\n#1 ${item.title}\n${item.text}`);
   }
 });
 
@@ -114,7 +115,18 @@ function renderHome() {
         </div>
         <p class="signature">${H("heroSign")}</p>
       </div>
-      <div class="hero-strip" aria-hidden="true">${["g-round", "g-bookmark", "g-coaster-sea", "g-canvas", "g-pen-red", "g-domino"].map((n) => `<img src="images/real/${n}.jpg" alt="" decoding="async">`).join("")}</div>
+      <div class="hero-strip">${[["g-round", "Sea pour"], ["g-bookmark", "Sea bookmark with tassel"], ["g-coaster-sea", "Sea cup stands with starfish"], ["g-canvas", "Sea canvas"], ["g-pen-red", "Pen with dried flowers and gold leaf"], ["g-domino", "Domino set"]].map(([n, c]) => `<a href="#shop" data-goto="images/real/${n}.jpg"><img src="images/real/${n}.jpg" alt="${c}" decoding="async"></a>`).join("")}</div>
+    </section>
+
+    <section class="section ways">
+      <div class="wrap">
+        <h2>${H("waysTitle")}</h2>
+        <div class="ways-grid">
+          <a class="way" href="#shop"><span class="way-n">1</span><h3>${H("way1T")}</h3><p>${H("way1P")}</p><span class="text-link">${H("way1C")}</span></a>
+          <a class="way" href="design.html?start=1"><span class="way-n">2</span><h3>${H("way2T")}</h3><p>${H("way2P")}</p><span class="text-link">${H("way2C")}</span></a>
+          <a class="way" href="idea.html"><span class="way-n">3</span><h3>${H("way3T")}</h3><p>${H("way3P")}</p><span class="text-link">${H("way3C")}</span></a>
+        </div>
+      </div>
     </section>
 
     <section class="section" id="shop">
@@ -127,10 +139,19 @@ function renderHome() {
         <div class="gallery rec">${[["g-fruit-bowl", "Sea fruit bowl"], ["g-tail", "Mermaid tail board"], ["g-canvas", "Sea canvas"], ["g-round", "Sea pour"], ["g-coaster-sea", "Sea cup stands with starfish"], ["g-paddle", "Sea paddle board"], ["g-bookmark", "Sea bookmark with tassel"], ["g-platter", "Sea platter"], ["g-sea-shells", "Sea canvas with shells and starfish"]].map(([n, c]) => `<figure><img src="images/real/${n}.jpg" alt="${c}" decoding="async"><figcaption><strong>${c}</strong></figcaption>${buyBtns(n, c, "images/real/" + n + ".jpg", "Recommended sea designs")}</figure>`).join("")}</div>
         <div class="themes">${CONFIG.gallery.filter((t) => t.items.length).map((t) => `
           <h3 class="theme-h">${esc(t.theme)}</h3>
-          <div class="gallery">${t.theme === "Keychains" ? presets.map((p) => `<figure class="ready"><a href="design.html?preset=${p.id}"><img src="${p.photo}" alt="${esc(p.name)}" decoding="async"></a><figcaption><strong>${esc(p.name)}</strong><span>${esc(tr(p, "blurb"))}</span></figcaption>${buyBtns(p.id, p.name, p.photo, "preset")}</figure>`).join("") : ""}${t.items.map((it, ix) => (it.sub && it.sub !== (t.items[ix - 1] || {}).sub ? `</div><h4 class="sub-h">${esc(it.sub)}</h4><div class="gallery">` : "") + (it.video
-            ? `<figure><video src="${it.video}" poster="${it.poster || ""}" autoplay muted loop playsinline></video><figcaption><strong>${esc(it.cap)}</strong></figcaption>${buyBtns((it.img || it.cap).replace(/\W+/g, "-"), it.cap, it.img || it.poster, t.theme)}</figure>`
-            : `<figure><img src="${it.img}" alt="${esc(it.cap)}" decoding="async"><figcaption><strong>${esc(it.cap)}</strong></figcaption>${buyBtns(it.img.replace(/\W+/g, "-"), it.cap, it.img, t.theme)}</figure>`)).join("")}</div>`).join("")}
+          <div class="gallery">${t.theme === "Keychains" ? presets.map((p) => `<figure class="ready"><a href="design.html?preset=${p.id}"><img src="${p.photo}" alt="${esc(p.name)}" decoding="async"></a><figcaption><strong>${esc(p.name)}</strong>${priceTag(p)}<span>${esc(tr(p, "blurb"))}</span></figcaption>${buyBtns(p.id, p.name, p.photo, "preset")}</figure>`).join("") : ""}${t.items.map((it, ix) => (it.sub && it.sub !== (t.items[ix - 1] || {}).sub ? `</div><h4 class="sub-h">${esc(it.sub)}</h4><div class="gallery">` : "") + (it.video
+            ? `<figure><video src="${it.video}" poster="${it.poster || ""}" autoplay muted loop playsinline></video><figcaption><strong>${esc(it.cap)}</strong>${priceTag(it)}</figcaption>${buyBtns((it.img || it.cap).replace(/\W+/g, "-"), it.cap, it.img || it.poster, t.theme)}</figure>`
+            : `<figure><img src="${it.img}" alt="${esc(it.cap)}" decoding="async"><figcaption><strong>${esc(it.cap)}</strong>${priceTag(it)}</figcaption>${buyBtns(it.img.replace(/\W+/g, "-"), it.cap, it.img, t.theme)}</figure>`)).join("")}</div>`).join("")}
         </div>
+      </div>
+    </section>
+
+    <section class="section how">
+      <div class="wrap">
+        <h2>${H("howTitle")}</h2>
+        <ol class="how-steps">
+          ${[1, 2, 3, 4].map((n) => `<li><span class="how-n">${n}</span><h3>${H(`how${n}T`)}</h3><p>${H(`how${n}P`)}</p></li>`).join("")}
+        </ol>
       </div>
     </section>
 
@@ -153,17 +174,6 @@ function renderHome() {
       </div>
     </section>
 
-    <section class="section ways">
-      <div class="wrap">
-        <h2>${H("waysTitle")}</h2>
-        <div class="ways-grid">
-          <a class="way" href="#shop"><span class="way-n">1</span><h3>${H("way1T")}</h3><p>${H("way1P")}</p><span class="text-link">${H("way1C")}</span></a>
-          <a class="way" href="design.html?start=1"><span class="way-n">2</span><h3>${H("way2T")}</h3><p>${H("way2P")}</p><span class="text-link">${H("way2C")}</span></a>
-          <a class="way" href="idea.html"><span class="way-n">3</span><h3>${H("way3T")}</h3><p>${H("way3P")}</p><span class="text-link">${H("way3C")}</span></a>
-        </div>
-      </div>
-    </section>
-
     <section class="section">
       <div class="wrap">
         <div class="section-head">
@@ -179,15 +189,6 @@ function renderHome() {
       </div>
     </section>
 
-    <section class="section how">
-      <div class="wrap">
-        <h2>${H("howTitle")}</h2>
-        <ol class="how-steps">
-          ${[1, 2, 3, 4].map((n) => `<li><span class="how-n">${n}</span><h3>${H(`how${n}T`)}</h3><p>${H(`how${n}P`)}</p></li>`).join("")}
-        </ol>
-      </div>
-    </section>
-
     <section class="section story">
       <div class="wrap story-grid">
         <img src="images/andaman-bloom.jpg" alt="" decoding="async">
@@ -195,6 +196,17 @@ function renderHome() {
           <h2>${H("storyTitle")}</h2>
           <p>${H("storyP1")}</p>
           <p>${H("storyP2")}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section delivery" id="delivery">
+      <div class="wrap">
+        <h2>${H("delivTitle")}</h2>
+        <div class="deliv-grid">
+          <div class="deliv"><span class="deliv-ic" aria-hidden="true">⏳</span><h3>${H("deliv1T", { time: tr(CONFIG, "readyTime") })}</h3><p>${H("a1")}</p></div>
+          <div class="deliv"><span class="deliv-ic" aria-hidden="true">📦</span><h3>${H("deliv2T")}</h3><p>${esc(tr(CONFIG.delivery || {}, "pickup") || H("how4P"))}</p></div>
+          <div class="deliv"><span class="deliv-ic" aria-hidden="true">💳</span><h3>${H("deliv3T")}</h3><p>${esc(tr(CONFIG.delivery || {}, "payment") || H("a2"))}</p></div>
         </div>
       </div>
     </section>
@@ -230,7 +242,50 @@ function renderHome() {
         <p class="small-note" id="fb-note">${FB("note")}</p>
       </div>
     </section>`;
+  collapseShop(root);
 }
+
+/* Shop: show one or two rows per section, with a "See all" button for the rest */
+function collapseShop(root) {
+  root.querySelectorAll("#shop .gallery").forEach((g) => {
+    const figs = [...g.children].filter((x) => x.tagName === "FIGURE");
+    const keep = g.classList.contains("rec") ? 6 : 4;
+    if (figs.length <= keep) return;
+    figs.slice(keep).forEach((f) => f.classList.add("more"));
+    g.classList.add("folded");
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "btn btn-line see-all"; b.setAttribute("aria-expanded", "false");
+    b.textContent = t("shop.seeAll", { n: figs.length });
+    b._g = g; b._n = figs.length;
+    g.after(b);
+  });
+}
+function unfold(g, open) {
+  const b = g.nextElementSibling;
+  if (!b || !b.classList.contains("see-all")) return;
+  g.classList.toggle("folded", !open);
+  b.setAttribute("aria-expanded", String(open));
+  b.textContent = open ? t("shop.seeLess", null) : t("shop.seeAll", { n: b._n });
+}
+document.addEventListener("click", (e) => {
+  const b = e.target.closest(".see-all");
+  if (b) {
+    const open = b.getAttribute("aria-expanded") !== "true";
+    unfold(b._g, open);
+    if (!open) b._g.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+  // hero photos jump to that piece in the shop
+  const go = e.target.closest("[data-goto]");
+  if (!go) return;
+  const img = [...document.querySelectorAll("#shop .gallery figure img")].find((im) => im.getAttribute("src") === go.dataset.goto);
+  const fig = img && img.closest("figure");
+  if (!fig) return;   // falls back to the #shop link
+  e.preventDefault();
+  if (fig.classList.contains("more")) unfold(fig.parentElement, true);
+  fig.scrollIntoView({ behavior: "smooth", block: "center" });
+  fig.classList.remove("flash"); void fig.offsetWidth; fig.classList.add("flash");
+});
 const FBT = {
   en: { title: "Tell us what you think", sub: "Your feedback helps Anna make the shop better. Write a comment, a wish or a idea.", rate: "Rating", name: "Your name (optional)", ph: "What do you like? What could be better?", send: "Send feedback to Anna", note: "Tapping send copies your message and opens Instagram, where you paste it into the chat.", empty: "Please write a few words first.", done: "Copied! Paste it in the Instagram chat. Thank you 💛" },
   th: { title: "บอกเราว่าคุณคิดอย่างไร", sub: "ความเห็นของคุณช่วยให้แอนนาปรับปรุงร้านให้ดีขึ้น เขียนความเห็น ความต้องการ หรือไอเดียได้เลย", rate: "ให้คะแนน", name: "ชื่อของคุณ (ไม่บังคับ)", ph: "ชอบอะไร? อะไรควรดีขึ้น?", send: "ส่งความเห็นถึงแอนนา", note: "กดส่งแล้วข้อความจะถูกคัดลอกและเปิด Instagram ให้วางในแชท", empty: "กรุณาเขียนสักเล็กน้อยก่อน", done: "คัดลอกแล้ว วางในแชท Instagram ขอบคุณ 💛" },
@@ -245,8 +300,8 @@ document.addEventListener("click", (e) => {
     const text = (document.getElementById("fb-text").value || "").trim(), name = (document.getElementById("fb-name").value || "").trim();
     const note = document.getElementById("fb-note");
     if (!text) { note.textContent = FB("empty"); return; }
-    const msg = `Feedback for Resincraftcode 💛${fbStars ? "\nRating: " + "★".repeat(fbStars) + "☆".repeat(5 - fbStars) : ""}${name ? "\nFrom: " + name : ""}\n\n${text}`;
-    copyText(msg).catch(() => {}); note.textContent = FB("done"); window.open(igLink(), "_blank", "noopener");
+    const msg = `${hello("feedback")}${fbStars ? "\nRating: " + "★".repeat(fbStars) + "☆".repeat(5 - fbStars) : ""}${name ? "\nFrom: " + name : ""}\n\n${text}`;
+    openSend(msg, { feedback: true, onSent: () => { note.textContent = FB("done"); } });
   }
 });
 
@@ -259,7 +314,7 @@ function ideaText() {
     : "My own shape (from my photo)";
   const size = tr(IDEA.sizes.find((s) => s.id === idea.size), "name", "en");
   const lines = [
-    "Hi Anna! I have an idea for a custom keychain.",
+    hello("idea"),
     "",
     "Idea: " + (idea.describe.trim() || "(see my photo)"),
     shape,
@@ -366,8 +421,9 @@ function bindIdea() {
       root.querySelector("textarea[name=describe]").focus();
       return;
     }
+    e.preventDefault();
     err.textContent = "";
-    copyText(ideaText()).then(() => toast(I("copied"))).catch(() => toast(I("copyFail")));
+    openSend(ideaText());
   });
 }
 
@@ -397,6 +453,8 @@ const fullOf = (u) => u.replace(/^images\/real\/([^\/]+\.jpg)$/, "images/real/fu
   const EXT = ["jpg", "jpeg", "png", "webp"], MAX = 8, cache = {};
   const probe = (url) => cache[url] || (cache[url] = new Promise((res) => { const im = new Image(); im.onload = () => res(true); im.onerror = () => res(false); im.src = url; }));
   async function anglesOf(src) {
+    // photos.js lists every extra angle, so the browser doesn't have to guess file names
+    if (typeof PHOTO_ANGLES !== "undefined") return [src].concat(PHOTO_ANGLES[src] || []);
     const m = src.match(/^(.*?)(?:-\d+)?\.(\w+)$/); if (!m) return [src];
     const out = [src];
     for (let n = 2; n <= MAX; n++) {

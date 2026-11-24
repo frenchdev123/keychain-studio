@@ -1,0 +1,22 @@
+name: Update photo list
+# Keeps photos.js in step with the pictures in images/real, so new angles (g-name-2.jpg ...) show up as sliders.
+on:
+  push:
+    branches: [main]
+    paths: ["images/real/**"]
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tools/update-photos.py
+      - run: |
+          if ! git diff --quiet photos.js; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add photos.js
+            git commit -m "Update photo list"
+            git push
+          fi

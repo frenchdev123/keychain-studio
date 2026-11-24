@@ -151,7 +151,7 @@ function setCart(list) { try { localStorage.setItem(CART_KEY, JSON.stringify(lis
 function addToCart(item) { const l = getCart(); l.push(Object.assign({ id: Date.now() + Math.random().toString(36).slice(2, 6) }, item)); return setCart(l); }
 function cartOrderText() {
   const l = getCart();
-  const out = [`Hi Anna! I'd like to order ${l.length} ${l.length === 1 ? "piece" : "pieces"} 💛`, ""];
+  const out = [hello("order", l.length), ""];
   l.forEach((it, i) => { out.push(`#${i + 1} ${it.title}`, it.text, ""); });
   return out.join("\n");
 }
@@ -174,7 +174,7 @@ document.addEventListener("click", (e) => {
   const del = e.target.closest("[data-cart-del]");
   if (del) { setCart(getCart().filter((x) => x.id !== del.dataset.cartDel)); return; }
   if (e.target.closest("[data-cart-copy]")) { copyText(cartOrderText()).catch(() => {}); e.target.closest("[data-cart-copy]").textContent = ui.lang === "en" ? "Copied ✓" : (phrase("Copied ✓") || "Copied ✓"); return; }
-  if (e.target.closest("[data-cart-dm]")) { copyText(cartOrderText()).catch(() => {}); return; }
+  if (e.target.closest("[data-cart-dm]")) { if (dr) dr.classList.remove("open"); openSend(cartOrderText()); return; }
   if (e.target.closest("[data-cart-clear]")) { setCart([]); }
 });
 
@@ -195,7 +195,6 @@ function renderChrome() {
         <nav class="nav-links" id="nav-links" aria-label="Main">
           <a href="index.html#shop" class="nav-cta nav-shop">${N("shop")}</a>
           <a href="design.html?start=1" class="nav-cta nav-design">${N("design")}</a>
-          <a href="design.html?saves=1" class="nav-cta nav-drafts">${t("ui.myDraftsBtn")}</a>
           <div class="dd">
             <button type="button" class="dd-btn nav-cta nav-sec" aria-haspopup="true">${N("sections")} <span aria-hidden="true">▾</span></button>
             <div class="dd-menu">${[["design.html?cat=keychains", "Keychains"], ["design.html?cat=accessories", "Accessories"], ["design.html?cat=statues", "Games & decor"], ["design.html?cat=kitchen", "Dining & restaurant"], ["design.html?cat=cutting", "Wooden cutting boards"], ["design.html?cat=paint", "Any size canvas"], ["canvas.html?kind=photo", "Custom gifts"], ["idea.html", "Send us a photo"]].map(([href, nm]) => `<a href="${href}">${nm}</a>`).join("")}</div>
@@ -215,7 +214,7 @@ function renderChrome() {
     const dr = document.createElement("aside");
     dr.id = "cart-drawer"; dr.className = "cart-drawer";
     dr.innerHTML = `<div class="cart-back" data-cart-close></div><div class="cart-panel"><div class="cart-head"><h2>Your cart</h2><button type="button" data-cart-close aria-label="Close">✕</button></div><ul class="cart-list"></ul>
-      <div class="cart-actions" hidden><a class="btn btn-ink wide" href="${igLink()}" target="_blank" rel="noopener" data-cart-dm>Send the order to Anna on Instagram</a><button type="button" class="btn btn-line wide" data-cart-copy>Copy the order text</button><button type="button" class="btn btn-line small" data-cart-clear>Empty the cart</button><p class="small-note">The order text is copied when you tap Send. Paste it into the chat.</p></div></div>`;
+      <div class="cart-actions" hidden><button type="button" class="btn btn-ink wide" data-cart-dm>Send the order to Anna</button><button type="button" class="btn btn-line wide" data-cart-copy>Copy the order text</button><button type="button" class="btn btn-line small" data-cart-clear>Empty the cart</button></div></div>`;
     document.body.appendChild(dr);
   }
   renderCart();
@@ -232,12 +231,14 @@ function renderChrome() {
           <a href="index.html#shop">${N("shop")}</a>
           <a href="index.html#sec-keychains">${N("sections")}</a>
           <a href="idea.html">${N("idea")}</a>
+          <a href="design.html?saves=1">${t("ui.myDraftsBtn")}</a>
           <a href="index.html#faq">${N("faq")}</a>
         </nav>
         <div class="foot-col">
           <span class="foot-label">${H("follow")}</span>
           <a href="https://www.instagram.com/${CONFIG.instagram}/" target="_blank" rel="noopener">Instagram</a>
-          <a href="${CONFIG.facebook}" target="_blank" rel="noopener">Facebook</a>
+          ${CONFIG.facebook ? `<a href="${esc(CONFIG.facebook)}" target="_blank" rel="noopener">Facebook</a>` : ""}
+          ${waDigits() ? `<a href="https://wa.me/${waDigits()}" target="_blank" rel="noopener">WhatsApp</a>` : ""}
           <a href="${igLink()}" target="_blank" rel="noopener">${H("contact")}</a>
         </div>
       </div>
@@ -301,11 +302,13 @@ new MutationObserver(() => { clearTimeout(revealScan.t); revealScan.t = setTimeo
 /* Preload every picture in the background so nothing pops in or flickers while you design or scroll */
 (function preloadAll() {
   if (typeof CONFIG === "undefined" || document.body.dataset.page !== "design") return;   // the home page only loads what you scroll to
+  const net = navigator.connection;
+  if (net && (net.saveData || /(^|-)2g|3g/.test(net.effectiveType || ""))) return;   // on slow or metered data, load pictures only when a step needs them
   const urls = new Set();
   const add = (u) => { if (u && typeof u === "string") urls.add(u); };
   (CONFIG.addins || []).forEach((a) => add(a.img));
-  (CONFIG.glitters || []).forEach((g) => add(`images/glitter/${g.id}.png`));
-  (CONFIG.tassels || []).forEach((t) => add(`images/tassels/${t.id}.png`));
+  (CONFIG.glitters || []).forEach((g) => add(`images/glitter/${g.id}.webp`));
+  (CONFIG.tassels || []).forEach((t) => add(`images/tassels/${t.id}.webp`));
   ["metal"].forEach(() => {});
   ["gold", "yellow", "copper", "silver", "chrome", "black"].forEach((m) => add(`images/letters/${m}.jpg`));
   ["images/real/swirl-gray.jpg", "images/sea/starfish-drawn.svg"].forEach(add);
@@ -325,3 +328,81 @@ new MutationObserver(() => { clearTimeout(revealScan.t); revealScan.t = setTimeo
   new MutationObserver(mark).observe(document.documentElement, { childList: true, subtree: true });
   mark();
 })();
+
+/* =========================================================
+   "Send to Anna": one popup used by every order and feedback button.
+   It copies the message, opens the chat app the customer picks, and tells them to paste.
+   WhatsApp and LINE only appear when their numbers are filled in config.js.
+   ========================================================= */
+const SEND_T = {
+  en: { title: "Send your order to Anna", fbTitle: "Send your message to Anna", sub: "Pick where to send it. Anna replies to confirm the price and the date.", s1: "We copy your message for you.", s2: "The chat opens.", s3: "Tap the message box, choose Paste, then Send.", s3wa: "On WhatsApp the message is already typed in. Just tap Send.", see: "See the message", copy: "Copy the message", copied: "Copied ✓ Now paste it in the chat.", close: "Close" },
+  th: { title: "ส่งคำสั่งซื้อถึงแอนนา", fbTitle: "ส่งข้อความถึงแอนนา", sub: "เลือกช่องทางที่จะส่ง แอนนาจะตอบกลับเพื่อยืนยันราคาและวันที่", s1: "เราคัดลอกข้อความให้คุณแล้ว", s2: "แชทจะเปิดขึ้น", s3: "แตะที่ช่องพิมพ์ข้อความ เลือก วาง แล้วกดส่ง", s3wa: "ใน WhatsApp ข้อความถูกพิมพ์ไว้ให้แล้ว แค่กดส่ง", see: "ดูข้อความ", copy: "คัดลอกข้อความ", copied: "คัดลอกแล้ว ✓ วางในแชทได้เลย", close: "ปิด" },
+  ru: { title: "Отправить заказ Анне", fbTitle: "Отправить сообщение Анне", sub: "Выбери, куда отправить. Анна ответит и подтвердит цену и дату.", s1: "Мы копируем твоё сообщение.", s2: "Открывается чат.", s3: "Нажми на поле ввода, выбери «Вставить» и отправь.", s3wa: "В WhatsApp сообщение уже набрано. Просто нажми «Отправить».", see: "Показать сообщение", copy: "Скопировать сообщение", copied: "Скопировано ✓ Теперь вставь в чат.", close: "Закрыть" },
+};
+const ST = (k) => (SEND_T[ui.lang] || SEND_T.en)[k];
+
+/* The first line of every message is in the customer's language; the details stay in English so Anna reads every order the same way. */
+const HELLO = {
+  order: { en: (n) => `Hi Anna! I'd like to order ${n} ${n === 1 ? "piece" : "pieces"} 💛`, th: (n) => `สวัสดีค่ะ แอนนา! อยากสั่ง ${n} ชิ้นค่ะ 💛`, ru: (n) => `Здравствуйте, Анна! Хочу заказать ${n} шт. 💛` },
+  keychain: { en: () => "Hi Anna! I designed a keychain on your website 💛", th: () => "สวัสดีค่ะ แอนนา! ออกแบบพวงกุญแจบนเว็บไซต์มาแล้วค่ะ 💛", ru: () => "Здравствуйте, Анна! Я придумал(а) брелок на вашем сайте 💛" },
+  canvas: { en: () => "Hi Anna! I'd like a canvas.", th: () => "สวัสดีค่ะ แอนนา! อยากสั่งแคนวาสค่ะ", ru: () => "Здравствуйте, Анна! Хочу заказать холст." },
+  photo: { en: () => "Hi Anna! I'd like a photo canvas 💛", th: () => "สวัสดีค่ะ แอนนา! อยากสั่งแคนวาสรูปถ่ายค่ะ 💛", ru: () => "Здравствуйте, Анна! Хочу холст с фотографиями 💛" },
+  idea: { en: () => "Hi Anna! I have an idea for a custom piece.", th: () => "สวัสดีค่ะ แอนนา! มีไอเดียอยากให้ทำค่ะ", ru: () => "Здравствуйте, Анна! У меня есть идея для заказа." },
+  feedback: { en: () => "Feedback for Resincraftcode 💛", th: () => "ความคิดเห็นถึง Resincraftcode 💛", ru: () => "Отзыв для Resincraftcode 💛" },
+};
+function hello(kind, n) { const h = HELLO[kind]; return (h[ui.lang] || h.en)(n); }
+
+const waDigits = () => String(CONFIG.whatsapp || "").replace(/\D/g, "");
+function sendChannels(text) {
+  const list = [{ id: "ig", label: "Instagram", href: igLink() }];
+  if (waDigits()) list.push({ id: "wa", label: "WhatsApp", href: `https://wa.me/${waDigits()}?text=${encodeURIComponent(text)}` });
+  const line = String(CONFIG.line || "").trim();
+  if (line) list.push({ id: "line", label: "LINE", href: line.startsWith("@") ? `https://line.me/R/oaMessage/${encodeURIComponent(line)}/?${encodeURIComponent(text)}` : `https://line.me/ti/p/~${encodeURIComponent(line)}` });
+  return list;
+}
+let sendBox = null;
+function closeSend() {
+  if (!sendBox) return;
+  document.removeEventListener("keydown", sendBox._key);
+  const back = sendBox._from; sendBox.remove(); sendBox = null;
+  if (back && back.focus) back.focus();
+}
+function openSend(text, opts = {}) {
+  closeSend();
+  const chans = sendChannels(text);
+  sendBox = document.createElement("div");
+  sendBox.className = "send-dlg";
+  sendBox._from = document.activeElement;
+  sendBox.innerHTML = `<div class="send-back" data-send-close></div>
+    <div class="send-panel" role="dialog" aria-modal="true" aria-labelledby="send-h">
+      <button type="button" class="send-x" data-send-close aria-label="${esc(ST("close"))}">✕</button>
+      <h2 id="send-h">${esc(opts.feedback ? ST("fbTitle") : ST("title"))}</h2>
+      <p class="send-sub">${esc(ST("sub"))}</p>
+      <div class="send-ch">${chans.map((c, i) => `<a class="btn ${i ? "btn-line" : "btn-ink"} wide ch-${c.id}" href="${esc(c.href)}" target="_blank" rel="noopener" data-send-ch="${c.id}">${c.label}</a>`).join("")}</div>
+      <ol class="send-steps"><li>${esc(ST("s1"))}</li><li>${esc(ST("s2"))}</li><li>${esc(ST("s3"))}</li></ol>
+      ${waDigits() ? `<p class="small-note">${esc(ST("s3wa"))}</p>` : ""}
+      <p class="send-done" role="status" aria-live="polite"></p>
+      <details class="send-msg"><summary>${esc(ST("see"))}</summary><textarea readonly rows="8">${esc(text)}</textarea></details>
+      <button type="button" class="btn btn-line small" data-send-copy>${esc(ST("copy"))}</button>
+    </div>`;
+  document.body.appendChild(sendBox);
+  const done = sendBox.querySelector(".send-done");
+  const copyNow = () => copyText(text).then(() => { done.textContent = ST("copied"); }).catch(() => { sendBox && (sendBox.querySelector(".send-msg").open = true); });
+  sendBox.addEventListener("click", (e) => {
+    if (e.target.closest("[data-send-close]")) return closeSend();
+    if (e.target.closest("[data-send-ch]")) { copyNow(); if (opts.onSent) opts.onSent(); return; }
+    if (e.target.closest("[data-send-copy]")) copyNow();
+  });
+  sendBox._key = (e) => {
+    if (e.key === "Escape") closeSend();
+    if (e.key === "Tab") {   // keep focus inside the popup
+      const f = [...sendBox.querySelectorAll("a, button, summary, textarea")].filter((x) => x.offsetParent);
+      if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    }
+  };
+  document.addEventListener("keydown", sendBox._key);
+  sendBox.querySelector("[data-send-ch]").focus();
+  copyText(text).catch(() => {});   // copy straight away too, in case they switch apps themselves
+}

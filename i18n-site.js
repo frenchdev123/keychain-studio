@@ -5,9 +5,9 @@
    (The designer's words are in i18n.js.)
    ========================================================= */
 Object.assign(I18N.en, {
-  shop: { digital: "Open the digital version", addCart: "Add to cart", buyNow: "Purchase now", added: "Added" },
+  shop: { digital: "Customise it", addCart: "Add to cart", buyNow: "Order", added: "Added", seeAll: "See all {n}", seeLess: "Show less", from: "from {price}" },
   nav: {
-    shop: "Shop", sections: "Sections", design: "Design your own", canvas: "Canvases", idea: "Request something not on the site", reviews: "Reviews", faq: "FAQ", menu: "Menu", home: "Home",
+    shop: "Shop", sections: "Sections", design: "Design your own", canvas: "Canvases", idea: "Custom order", reviews: "Reviews", faq: "FAQ", menu: "Menu", home: "Home",
     announce: "Handmade to order in Phuket. Ready in about 5–7 days.",
   },
   home: {
@@ -40,6 +40,7 @@ Object.assign(I18N.en, {
     storyP1: "Resincraftcode is a small studio run by Anna in Phuket. Every keychain is poured, polished and finished by hand.",
     storyP2: "Our beach pieces are Phuket-inspired: we use craft sand and faux shells, never anything taken from the beach.",
     reviewsTitle: "From our customers",
+    delivTitle: "Delivery and payment", deliv1T: "Ready in {time}", deliv2T: "Getting it to you", deliv3T: "Paying",
     igTitle: "See our work on Instagram", igText: "New pieces, behind the scenes and custom orders.", igCta: "Follow @{handle}",
     faqTitle: "Questions",
     q1: "How long does it take?", a1: "About 5–7 days, because resin needs time to cure. Ask in DM if you need it sooner.",
@@ -47,7 +48,7 @@ Object.assign(I18N.en, {
     q3: "Will it look exactly like the preview?", a3: "Very close, but each piece is handmade, so colours, ink and glitter flow a little differently every time.",
     q4: "How do I care for it?", a4: "Keep it out of long sun and hot cars, clean it with a soft damp cloth, and don't use hand sanitizer on the resin.",
     q5: "Can I order something that isn't on the site?", a5: "Yes. Use Send an idea, or message us on Instagram.",
-    footerTag: "Handmade resin keychains from Phuket.", follow: "Follow us", contact: "Message us",
+    footerTag: "Handmade resin art from Phuket.", follow: "Follow us", contact: "Message us",
   },
   idea: {
     title: "Send us your idea",
@@ -69,9 +70,9 @@ Object.assign(I18N.en, {
 });
 
 Object.assign(I18N.th, {
-  shop: { digital: "เปิดเวอร์ชันดิจิทัล", addCart: "เพิ่มลงตะกร้า", buyNow: "ซื้อเลย", added: "เพิ่มแล้ว" },
+  shop: { digital: "ปรับแต่งเอง", addCart: "เพิ่มลงตะกร้า", buyNow: "สั่งซื้อ", added: "เพิ่มแล้ว", seeAll: "ดูทั้งหมด {n} ชิ้น", seeLess: "แสดงน้อยลง", from: "เริ่มต้น {price}" },
   nav: {
-    shop: "ร้านค้า", sections: "หมวดหมู่", design: "ออกแบบเอง", canvas: "ผ้าใบ", idea: "ขอสิ่งที่ไม่มีในเว็บไซต์", reviews: "รีวิว", faq: "คำถาม", menu: "เมนู", home: "หน้าแรก",
+    shop: "ร้านค้า", sections: "หมวดหมู่", design: "ออกแบบเอง", canvas: "ผ้าใบ", idea: "สั่งทำพิเศษ", reviews: "รีวิว", faq: "คำถาม", menu: "เมนู", home: "หน้าแรก",
     announce: "งานทำมือตามสั่งจากภูเก็ต เสร็จภายในประมาณ 5–7 วัน",
   },
   home: {
@@ -101,6 +102,7 @@ Object.assign(I18N.th, {
     storyP1: "Resincraftcode เป็นสตูดิโอเล็กๆ ของแอนนาในภูเก็ต พวงกุญแจทุกชิ้นเท ขัด และเก็บงานด้วยมือ",
     storyP2: "งานธีมทะเลของเราได้แรงบันดาลใจจากภูเก็ต เราใช้ทรายสำหรับงานฝีมือและเปลือกหอยเทียม ไม่เก็บอะไรจากชายหาด",
     reviewsTitle: "จากลูกค้าของเรา",
+    delivTitle: "การจัดส่งและการชำระเงิน", deliv1T: "พร้อมใน {time}", deliv2T: "การรับสินค้า", deliv3T: "การชำระเงิน",
     igTitle: "ดูผลงานของเราในอินสตาแกรม", igText: "ชิ้นงานใหม่ เบื้องหลัง และงานสั่งทำ", igCta: "ติดตาม @{handle}",
     faqTitle: "คำถามที่พบบ่อย",
     q1: "ใช้เวลานานแค่ไหน?", a1: "ประมาณ 5–7 วัน เพราะเรซินต้องใช้เวลาแข็งตัว ถ้าต้องการเร็วกว่านี้ ทักถามใน DM ได้",
@@ -108,7 +110,7 @@ Object.assign(I18N.th, {
     q3: "ชิ้นจริงจะเหมือนภาพตัวอย่างเป๊ะไหม?", a3: "ใกล้เคียงมาก แต่ทุกชิ้นทำมือ สี หมึก และกากเพชรจะไหลต่างกันเล็กน้อยทุกครั้ง",
     q4: "ดูแลอย่างไร?", a4: "อย่าตากแดดนานหรือทิ้งไว้ในรถร้อน เช็ดด้วยผ้านุ่มชุบน้ำหมาดๆ และอย่าใช้เจลล้างมือกับเรซิน",
     q5: "สั่งแบบที่ไม่มีในเว็บได้ไหม?", a5: "ได้ ใช้หน้า ส่งไอเดีย หรือทักเราทางอินสตาแกรม",
-    footerTag: "พวงกุญแจเรซินทำมือจากภูเก็ต", follow: "ติดตามเรา", contact: "ส่งข้อความหาเรา",
+    footerTag: "งานเรซินทำมือจากภูเก็ต", follow: "ติดตามเรา", contact: "ส่งข้อความหาเรา",
   },
   idea: {
     title: "ส่งไอเดียของคุณ",
@@ -130,9 +132,9 @@ Object.assign(I18N.th, {
 });
 
 Object.assign(I18N.ru, {
-  shop: { digital: "Открыть цифровую версию", addCart: "В корзину", buyNow: "Купить сейчас", added: "Добавлено" },
+  shop: { digital: "Изменить под себя", addCart: "В корзину", buyNow: "Заказать", added: "Добавлено", seeAll: "Показать все ({n})", seeLess: "Свернуть", from: "от {price}" },
   nav: {
-    shop: "Магазин", sections: "Разделы", design: "Создать своё", canvas: "Холсты", idea: "Заказать то, чего нет на сайте", reviews: "Отзывы", faq: "Вопросы", menu: "Меню", home: "Главная",
+    shop: "Магазин", sections: "Разделы", design: "Создать своё", canvas: "Холсты", idea: "Свой заказ", reviews: "Отзывы", faq: "Вопросы", menu: "Меню", home: "Главная",
     announce: "Ручная работа на заказ, Пхукет. Готово примерно за 5–7 дней.",
   },
   home: {
@@ -162,6 +164,7 @@ Object.assign(I18N.ru, {
     storyP1: "Resincraftcode — маленькая студия Анны на Пхукете. Каждый брелок заливается, шлифуется и доводится вручную.",
     storyP2: "Наши морские работы вдохновлены Пхукетом: мы используем декоративный песок и искусственные ракушки и ничего не берём с пляжа.",
     reviewsTitle: "Отзывы покупателей",
+    delivTitle: "Доставка и оплата", deliv1T: "Готово через {time}", deliv2T: "Как получить", deliv3T: "Оплата",
     igTitle: "Наши работы в Instagram", igText: "Новые брелоки, процесс работы и индивидуальные заказы.", igCta: "Подписаться на @{handle}",
     faqTitle: "Вопросы",
     q1: "Сколько ждать?", a1: "Примерно 5–7 дней: смоле нужно время, чтобы застыть. Если нужно быстрее, спроси в Direct.",
@@ -169,7 +172,7 @@ Object.assign(I18N.ru, {
     q3: "Брелок будет точно как на картинке?", a3: "Очень похож, но каждый сделан вручную, поэтому цвета, чернила и глиттер каждый раз ложатся немного по-разному.",
     q4: "Как ухаживать?", a4: "Не оставляй на солнце и в горячей машине, протирай мягкой влажной тканью и не используй на смоле антисептик для рук.",
     q5: "Можно заказать то, чего нет на сайте?", a5: "Да. Используй «Отправить идею» или напиши нам в Instagram.",
-    footerTag: "Брелоки из смолы ручной работы с Пхукета.", follow: "Мы в соцсетях", contact: "Написать нам",
+    footerTag: "Изделия из смолы ручной работы с Пхукета.", follow: "Мы в соцсетях", contact: "Написать нам",
   },
   idea: {
     title: "Пришли свою идею",

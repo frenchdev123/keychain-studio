@@ -674,9 +674,9 @@ input.text-input.wide-input { width: 100%; font-family: var(--sans, inherit); fo
 .signature { font-family: var(--serif); font-style: italic; font-size: 1.5rem; margin: 6px 0 0; }
 .hero-strip { display: flex; gap: 14px; justify-content: center; padding: 14px var(--gutter) 56px; }
 .hero-strip img { aspect-ratio: 3 / 4; object-fit: cover; border-radius: 14px; border: 5px solid #fff; box-shadow: 0 10px 26px rgba(14, 63, 87, 0.22); }
-.hero-strip img:nth-child(odd) { transform: translateY(14px) rotate(-2.5deg); }
-.hero-strip img:nth-child(even) { transform: translateY(-6px) rotate(2deg); }
-@media (max-width: 700px) { .hero-strip img:nth-child(n+5) { display: none; } .hero-strip { gap: 8px; } }
+.hero-strip > a:nth-child(odd) img { transform: translateY(14px) rotate(-2.5deg); }
+.hero-strip > a:nth-child(even) img { transform: translateY(-6px) rotate(2deg); }
+@media (max-width: 700px) { .hero-strip > a:nth-child(n+5) { display: none; } .hero-strip { gap: 8px; } }
 #shop.section { background: var(--sand); }
 .make { border-top: 6px solid var(--ocean); }
 .make:nth-child(2) { border-top-color: var(--coral); }
@@ -1481,3 +1481,22 @@ body[data-page="design"] .cards.presets, .cards:has(.rl-pair) { grid-template-co
 .send-msg textarea { width: 100%; margin-top: 8px; font: inherit; font-size: 0.85rem; border: 1px solid var(--line); border-radius: 10px; padding: 10px; resize: vertical; }
 .send-panel [data-send-copy] { justify-self: start; }
 .cart-actions[hidden] { display: none; }
+
+/* ---------- Shop cards: one main button, small cart icon, "See all" ---------- */
+.hero-strip > a { display: block; flex: none; }
+.hero-strip > a img { display: block; transition: transform 0.25s; }
+.hero-strip > a:hover img, .hero-strip > a:focus-visible img { transform: translateY(-8px) rotate(0deg) scale(1.03); }
+.buy { flex-wrap: wrap; align-items: center; }
+.buy .btn.small.buy-now { flex: 1 1 0; padding: 10px 14px; font-size: 0.92rem; }
+.buy-cart { flex: none; width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; border: 1.5px solid #0E3F57; background: #fff; color: #0E3F57; cursor: pointer; font-weight: 700; }
+.buy-cart:hover { background: #0E3F57; color: #fff; }
+.buy-cart.added { background: #2E8B57; border-color: #2E8B57; color: #fff; }
+.gallery.folded > figure.more { display: none; }
+.see-all { display: flex; margin: 22px auto 8px; }
+.gallery figure.flash { animation: flash 1.6s ease; }
+@keyframes flash { 0%, 100% { box-shadow: 0 10px 28px rgba(14,63,87,0.14); } 25%, 60% { box-shadow: 0 0 0 4px #E8806C, 0 14px 34px rgba(232,128,108,0.45); } }
+/* "Three ways to order" now sits right under the hero: the navy wave moves with it */
+.letters-band::after { display: none; }
+.letters-band { padding-bottom: 80px; }
+.ways { position: relative; }
+.ways::before { content: ""; position: absolute; left: 0; right: 0; top: -79px; height: 80px; pointer-events: none; z-index: 3; background: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80' preserveAspectRatio='none'%3E%3Cpath d='M0 40 C 180 90 360 0 540 30 C 720 60 900 90 1080 40 C 1260 -5 1350 20 1440 40 V80 H0 Z' fill='%230E3F57'/%3E%3C/svg%3E") bottom/100% 100% no-repeat; }

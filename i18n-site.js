@@ -5,9 +5,9 @@
    (The designer's words are in i18n.js.)
    ========================================================= */
 Object.assign(I18N.en, {
-  shop: { digital: "Open the digital version", addCart: "Add to cart", buyNow: "Purchase now", added: "Added" },
+  shop: { digital: "Customise it", addCart: "Add to cart", buyNow: "Order", added: "Added", seeAll: "See all {n}", seeLess: "Show less", from: "from {price}" },
   nav: {
-    shop: "Shop", sections: "Sections", design: "Design your own", canvas: "Canvases", idea: "Request something not on the site", reviews: "Reviews", faq: "FAQ", menu: "Menu", home: "Home",
+    shop: "Shop", sections: "Sections", design: "Design your own", canvas: "Canvases", idea: "Custom order", reviews: "Reviews", faq: "FAQ", menu: "Menu", home: "Home",
     announce: "Handmade to order in Phuket. Ready in about 5–7 days.",
   },
   home: {
@@ -69,9 +69,9 @@ Object.assign(I18N.en, {
 });
 
 Object.assign(I18N.th, {
-  shop: { digital: "เปิดเวอร์ชันดิจิทัล", addCart: "เพิ่มลงตะกร้า", buyNow: "ซื้อเลย", added: "เพิ่มแล้ว" },
+  shop: { digital: "ปรับแต่งเอง", addCart: "เพิ่มลงตะกร้า", buyNow: "สั่งซื้อ", added: "เพิ่มแล้ว", seeAll: "ดูทั้งหมด {n} ชิ้น", seeLess: "แสดงน้อยลง", from: "เริ่มต้น {price}" },
   nav: {
-    shop: "ร้านค้า", sections: "หมวดหมู่", design: "ออกแบบเอง", canvas: "ผ้าใบ", idea: "ขอสิ่งที่ไม่มีในเว็บไซต์", reviews: "รีวิว", faq: "คำถาม", menu: "เมนู", home: "หน้าแรก",
+    shop: "ร้านค้า", sections: "หมวดหมู่", design: "ออกแบบเอง", canvas: "ผ้าใบ", idea: "สั่งทำพิเศษ", reviews: "รีวิว", faq: "คำถาม", menu: "เมนู", home: "หน้าแรก",
     announce: "งานทำมือตามสั่งจากภูเก็ต เสร็จภายในประมาณ 5–7 วัน",
   },
   home: {
@@ -130,9 +130,9 @@ Object.assign(I18N.th, {
 });
 
 Object.assign(I18N.ru, {
-  shop: { digital: "Открыть цифровую версию", addCart: "В корзину", buyNow: "Купить сейчас", added: "Добавлено" },
+  shop: { digital: "Изменить под себя", addCart: "В корзину", buyNow: "Заказать", added: "Добавлено", seeAll: "Показать все ({n})", seeLess: "Свернуть", from: "от {price}" },
   nav: {
-    shop: "Магазин", sections: "Разделы", design: "Создать своё", canvas: "Холсты", idea: "Заказать то, чего нет на сайте", reviews: "Отзывы", faq: "Вопросы", menu: "Меню", home: "Главная",
+    shop: "Магазин", sections: "Разделы", design: "Создать своё", canvas: "Холсты", idea: "Свой заказ", reviews: "Отзывы", faq: "Вопросы", menu: "Меню", home: "Главная",
     announce: "Ручная работа на заказ, Пхукет. Готово примерно за 5–7 дней.",
   },
   home: {

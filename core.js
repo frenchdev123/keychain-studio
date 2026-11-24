@@ -195,7 +195,6 @@ function renderChrome() {
         <nav class="nav-links" id="nav-links" aria-label="Main">
           <a href="index.html#shop" class="nav-cta nav-shop">${N("shop")}</a>
           <a href="design.html?start=1" class="nav-cta nav-design">${N("design")}</a>
-          <a href="design.html?saves=1" class="nav-cta nav-drafts">${t("ui.myDraftsBtn")}</a>
           <div class="dd">
             <button type="button" class="dd-btn nav-cta nav-sec" aria-haspopup="true">${N("sections")} <span aria-hidden="true">▾</span></button>
             <div class="dd-menu">${[["design.html?cat=keychains", "Keychains"], ["design.html?cat=accessories", "Accessories"], ["design.html?cat=statues", "Games & decor"], ["design.html?cat=kitchen", "Dining & restaurant"], ["design.html?cat=cutting", "Wooden cutting boards"], ["design.html?cat=paint", "Any size canvas"], ["canvas.html?kind=photo", "Custom gifts"], ["idea.html", "Send us a photo"]].map(([href, nm]) => `<a href="${href}">${nm}</a>`).join("")}</div>
@@ -232,6 +231,7 @@ function renderChrome() {
           <a href="index.html#shop">${N("shop")}</a>
           <a href="index.html#sec-keychains">${N("sections")}</a>
           <a href="idea.html">${N("idea")}</a>
+          <a href="design.html?saves=1">${t("ui.myDraftsBtn")}</a>
           <a href="index.html#faq">${N("faq")}</a>
         </nav>
         <div class="foot-col">

@@ -302,11 +302,13 @@ new MutationObserver(() => { clearTimeout(revealScan.t); revealScan.t = setTimeo
 /* Preload every picture in the background so nothing pops in or flickers while you design or scroll */
 (function preloadAll() {
   if (typeof CONFIG === "undefined" || document.body.dataset.page !== "design") return;   // the home page only loads what you scroll to
+  const net = navigator.connection;
+  if (net && (net.saveData || /(^|-)2g|3g/.test(net.effectiveType || ""))) return;   // on slow or metered data, load pictures only when a step needs them
   const urls = new Set();
   const add = (u) => { if (u && typeof u === "string") urls.add(u); };
   (CONFIG.addins || []).forEach((a) => add(a.img));
-  (CONFIG.glitters || []).forEach((g) => add(`images/glitter/${g.id}.png`));
-  (CONFIG.tassels || []).forEach((t) => add(`images/tassels/${t.id}.png`));
+  (CONFIG.glitters || []).forEach((g) => add(`images/glitter/${g.id}.webp`));
+  (CONFIG.tassels || []).forEach((t) => add(`images/tassels/${t.id}.webp`));
   ["metal"].forEach(() => {});
   ["gold", "yellow", "copper", "silver", "chrome", "black"].forEach((m) => add(`images/letters/${m}.jpg`));
   ["images/real/swirl-gray.jpg", "images/sea/starfish-drawn.svg"].forEach(add);

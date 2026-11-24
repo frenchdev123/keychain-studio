@@ -1063,7 +1063,7 @@ function tasselSvg(d, id) {
     const h = 170, w = h * ph.ratio;
     const loop = d.hardware === "necklace" ? `<ellipse cx="150" cy="112" rx="5" ry="7" fill="none" stroke="${ph.hex}" stroke-width="3"/>` : `<ellipse cx="172" cy="55" rx="5.5" ry="9" transform="rotate(35 172 55)" fill="none" stroke="${ph.hex}" stroke-width="3"/>`;
     return `<path d="${cordPath}" fill="none" stroke="${ph.hex}" stroke-width="3.5" stroke-linecap="round"/>${loop}
-      <image href="images/tassels/${ph.id}.png" x="${(232 - w * ph.kx).toFixed(1)}" y="108" width="${w.toFixed(1)}" height="${h}" preserveAspectRatio="none"/>`;
+      <image href="images/tassels/${ph.id}.webp" x="${(232 - w * ph.kx).toFixed(1)}" y="108" width="${w.toFixed(1)}" height="${h}" preserveAspectRatio="none"/>`;
   }
   const silk = tt.type === "silk";
   const n = silk ? 34 : 26;
@@ -1257,12 +1257,12 @@ function reviewThumbs(d) {
   th.push([`<span class="rv-art">${renderPiece(d)}</span>`, shapeName(d.shape)]);
   if (d.style !== "clear" && d.style !== "ocean" && !isFresh(d)) th.push([`<span class="rv-dots">${d.colors.map((c) => `<span class="dot" style="background:${c}"></span>`).join("")}</span>`, lab("style", d.style)]);
   const gl = [...new Set((d.crush || []).map((c) => c[0]))];
-  gl.slice(0, 4).forEach((g) => th.push([`<img src="images/glitter/${g}.png" alt="">`, glitterName(g)]));
+  gl.slice(0, 4).forEach((g) => th.push([`<img src="images/glitter/${g}.webp" alt="">`, glitterName(g)]));
   activeAddins(d).forEach((a) => th.push([`<img src="${a.img}" alt="">`, tr(a, "name")]));
   if (d.letters && d.letters.text) th.push([`<span class="rv-text">${esc(d.letters.text)}</span>`, t("ui.sLtH")]);
   if (d.hardware !== "none" && hasHardware(d.shape)) th.push([`<span class="rv-dots"><span class="dot" style="background:linear-gradient(135deg, ${METALS[d.metal][0]}, ${METALS[d.metal][1]})"></span></span>`, lab("hardware", d.hardware)]);
   const tas = d.tassel.photo && CONFIG.tassels.find((x) => x.id === d.tassel.photo);
-  if (d.tassel.type !== "none" && tas) th.push([`<img src="images/tassels/${tas.id}.png" alt="">`, t("ui.tassel")]);
+  if (d.tassel.type !== "none" && tas) th.push([`<img src="images/tassels/${tas.id}.webp" alt="">`, t("ui.tassel")]);
   if (d.second) th.push([`<span class="rv-text">${esc(d.second)}</span>`, t("sum.matching", { l: d.second })]);
   return th.map(([img, cap]) => `<figure class="rv"><div class="rv-img">${img}</div><figcaption>${esc(cap)}</figcaption></figure>`).join("");
 }
@@ -2026,7 +2026,7 @@ const STEP_VIEWS = [
     const cur = ui.pour.id;
     const grid = CONFIG.glitters.map((g) =>
       `<button type="button" class="gl ${cur === g.id ? "on" : ""}" aria-pressed="${cur === g.id}" data-glitter="${g.id}" data-gdrag="${g.id}" title="${esc(tr(g, "name"))}">
-        <span class="gl-img"><img src="images/glitter/${g.id}.png" alt="" draggable="false"></span><span class="gl-name">${tr(g, "name")}</span></button>`).join("");
+        <span class="gl-img"><img src="images/glitter/${g.id}.webp" alt="" draggable="false"></span><span class="gl-name">${tr(g, "name")}</span></button>`).join("");
     const seg = (key, vals, current, group) => `<div class="chips">${vals.map((v) =>
       `<button type="button" class="chip ${current === v ? "on" : ""}" aria-pressed="${current === v}" data-pour="${key}" data-value="${v}">${U(group)[v]}</button>`).join("")}</div>`;
     return `
@@ -2059,8 +2059,8 @@ const STEP_VIEWS = [
       <button type="button" class="btn btn-line small" data-action="photooff">${U("photoRemove")}</button>` : ""}`, U("photoNote2"))}
 `;
     const decoPick = `<div class="field"><span class="field-label">${U("decoQ")}</span><div class="cards deco-cards">
-      <button type="button" class="card deco ${design.deco === "natural" ? "on" : ""}" data-action="deco" data-id="natural"><span class="deco-pics charms-pics"><i><img src="images/sea/starfish.png" alt=""></i><i><img src="images/sea/shell-scallop.png" alt=""></i><i><img src="images/flowers/pink.png" alt=""></i><i><img src="images/dried/lavender.png" alt=""></i></span><span class="card-name">${U("decoNat")}</span><span class="card-text">${U("decoNatP")}</span></button>
-      <button type="button" class="card deco ${design.deco === "charms" ? "on" : ""}" data-action="deco" data-id="charms"><span class="deco-pics charms-pics"><i><img src="images/small/frog-green.png" alt=""></i><i><img src="images/small/crown-gold.png" alt=""></i><i><img src="images/small/butterfly-teal.png" alt=""></i><i><img src="images/small/rose-pink.png" alt=""></i></span><span class="card-name">${U("decoCharm")}</span><span class="card-text">${U("decoCharmP")}</span></button></div></div>`;
+      <button type="button" class="card deco ${design.deco === "natural" ? "on" : ""}" data-action="deco" data-id="natural"><span class="deco-pics charms-pics"><i><img src="images/sea/starfish.webp" alt=""></i><i><img src="images/sea/shell-scallop.webp" alt=""></i><i><img src="images/flowers/pink.webp" alt=""></i><i><img src="images/dried/lavender.webp" alt=""></i></span><span class="card-name">${U("decoNat")}</span><span class="card-text">${U("decoNatP")}</span></button>
+      <button type="button" class="card deco ${design.deco === "charms" ? "on" : ""}" data-action="deco" data-id="charms"><span class="deco-pics charms-pics"><i><img src="images/small/frog-green.webp" alt=""></i><i><img src="images/small/crown-gold.webp" alt=""></i><i><img src="images/small/butterfly-teal.webp" alt=""></i><i><img src="images/small/rose-pink.webp" alt=""></i></span><span class="card-name">${U("decoCharm")}</span><span class="card-text">${U("decoCharmP")}</span></button></div></div>`;
     const decoPick2 = isCup(design.shape) ? decoPick.replace(/<button type="button" class="card deco[^"]*" data-action="deco" data-id="charms">[\s\S]*?<\/button>/, "") : decoPick;
     if (!design.deco && design.style !== "ocean") return `<h2>${U("s5h")}</h2><p class="hint">${U("decoHint")} ${U("note3d")}</p>${decoPick2}`;
     if (design.shape === "frame-oval") design.deco = design.deco || "charms";
@@ -2156,7 +2156,7 @@ const RANK = ["sea", "metalsea", "seaanimals", "small", "charms", "flowers", "dr
     <h2>${U("s8h")}</h2>
     <p class="hint">${U("s8p")}</p>
     ${field(U("realTassels"), `<div class="gl-grid">${CONFIG.tassels.map((x) =>
-      `<button type="button" class="gl ${tt.photo === x.id && tt.type !== "none" ? "on" : ""}" aria-pressed="${tt.photo === x.id}" data-action="tassel" data-id="${x.id}"><span class="gl-img tas-img"><img src="images/tassels/${x.id}.png" alt=""></span><span class="gl-name">${x.name}</span></button>`).join("")}</div>`)}
+      `<button type="button" class="gl ${tt.photo === x.id && tt.type !== "none" ? "on" : ""}" aria-pressed="${tt.photo === x.id}" data-action="tassel" data-id="${x.id}"><span class="gl-img tas-img"><img src="images/tassels/${x.id}.webp" alt=""></span><span class="gl-name">${x.name}</span></button>`).join("")}</div>`)}
     ${tt.type !== "none" ? `<button type="button" class="btn btn-line small" data-action="notassel">${U("noTassel")}</button>` : ""}`;
   },
 
@@ -2207,7 +2207,7 @@ function renderStudioTools() {
   const cur = ui.pour.id;
   box.innerHTML = `
     <div class="ft-title">${U("sGlH")}</div>
-    <div class="ft-grid">${CONFIG.glitters.map((g) => `<button type="button" class="ft-g ${cur === g.id ? "on" : ""}" data-glitter="${g.id}" title="${esc(tr(g, "name"))}" aria-label="${esc(tr(g, "name"))}" aria-pressed="${cur === g.id}"><img src="images/glitter/${g.id}.png" alt=""></button>`).join("")}</div>
+    <div class="ft-grid">${CONFIG.glitters.map((g) => `<button type="button" class="ft-g ${cur === g.id ? "on" : ""}" data-glitter="${g.id}" title="${esc(tr(g, "name"))}" aria-label="${esc(tr(g, "name"))}" aria-pressed="${cur === g.id}"><img src="images/glitter/${g.id}.webp" alt=""></button>`).join("")}</div>
     <div class="ft-sizes">${["s", "m", "l"].map((v) => `<button type="button" class="chip brush ${ui.pour.size === v ? "on" : ""}" data-pour="size" data-value="${v}" title="${U("glSz")[v]}"><span class="brush-dot" style="width:${{ s: 6, m: 14, l: 26 }[v]}px;height:${{ s: 6, m: 14, l: 26 }[v]}px"></span></button>`).join("")}</div>
     <div class="ft-actions">
       <button type="button" class="btn btn-line small" data-action="glfill" ${cur ? "" : "disabled"}>${U("glFill")}</button>
@@ -2902,7 +2902,7 @@ els.panel.addEventListener("pointermove", (e) => {
     const a = tray.glass ? null : CONFIG.addins.find((x) => x.id === tray.id);
     tray.ghost = document.createElement("div");
     tray.ghost.className = "drag-ghost";
-    if (tray.glass) tray.ghost.style.background = `url(images/glitter/${tray.id}.png) center/cover, #3E8E99`;
+    if (tray.glass) tray.ghost.style.background = `url(images/glitter/${tray.id}.webp) center/cover, #3E8E99`;
     else tray.ghost.style.background = a.color;
     document.body.appendChild(tray.ghost);
     els.preview.classList.add("drop-target");

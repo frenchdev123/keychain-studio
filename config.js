@@ -17,7 +17,13 @@ const CONFIG = {
   readyTime_th: "ประมาณ 5–7 วัน",
   readyTime_ru: "примерно 5–7 дней",
   currency: "฿",
-  showPrices: false,
+  showPrices: false,   // ✏️ set to true to show prices. Shop items show "from ฿…" when you add price: 450 to them (see README)
+
+  /* ---- Delivery and payment (shown on the home page). Leave "" to use the general text. ---- */
+  delivery: {
+    pickup: "",  pickup_th: "", pickup_ru: "",     // e.g. "Free pick-up in Rawai, or Grab delivery anywhere in Phuket. We also post to the rest of Thailand."
+    payment: "", payment_th: "", payment_ru: "",   // e.g. "Thai bank transfer or PromptPay. Card payments by link."
+  },
   showTexture: false,   // inner pattern lines on textured molds (off = clean outline only)   // prices are hidden for now; set to true when Anna is ready
 
   prices: {

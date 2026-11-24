@@ -49,6 +49,7 @@ new MutationObserver(() => startSlides()).observe(document.documentElement, { ch
 
 /* ---------------- Shop buy buttons ---------------- */
 const DIGITAL = ["g-beach-lounger", "g-birthday-canvas", "g-bookmark", "g-canvas", "g-chess-sand", "g-coaster-ink", "g-coaster-sea", "g-coaster-stone", "g-coffee-art", "g-copper", "g-domino", "g-feather", "g-feather-canvas", "g-fruit-bowl", "g-gold-chess", "g-hairpin", "g-key-a-star", "g-key-e", "g-key-es", "g-key-k", "g-key-tail", "g-key-w", "g-lychee-bowl", "g-mosaic-bookmark", "g-night-coaster", "g-night-round", "g-nuts-dish", "g-paddle", "g-paint1", "g-paint3", "g-paint4", "g-pen", "g-pen-blue", "g-pen-ink", "g-pinkboard", "g-platter", "g-plum", "g-purple-pen", "g-purple-plate", "g-round", "g-round-pendant", "g-ruffle-bowl", "g-sea-shells", "g-sea-wide", "g-tail", "g-tealight", "g-tree", "g-wood-ocean-stand", "g-woodtray"];
+const priceTag = (o) => (CONFIG.showPrices && o && o.price ? `<span class="price-tag">${t("shop.from", { price: money(o.price) })}</span>` : "");
 const CART_ICON = `<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.2 10.2a1.5 1.5 0 0 0 1.5 1.2h7.9a1.5 1.5 0 0 0 1.5-1.1L20 8H6.2"/><circle cx="9.5" cy="19.5" r="1.3"/><circle cx="16.5" cy="19.5" r="1.3"/><path d="M13 7.5V3.5M11 5.5h4"/></svg>`;
 function buyBtns(id, name, img, section) {
   const key = (img || "").split("/").pop().replace(/\.\w+$/, "");
@@ -138,9 +139,9 @@ function renderHome() {
         <div class="gallery rec">${[["g-fruit-bowl", "Sea fruit bowl"], ["g-tail", "Mermaid tail board"], ["g-canvas", "Sea canvas"], ["g-round", "Sea pour"], ["g-coaster-sea", "Sea cup stands with starfish"], ["g-paddle", "Sea paddle board"], ["g-bookmark", "Sea bookmark with tassel"], ["g-platter", "Sea platter"], ["g-sea-shells", "Sea canvas with shells and starfish"]].map(([n, c]) => `<figure><img src="images/real/${n}.jpg" alt="${c}" decoding="async"><figcaption><strong>${c}</strong></figcaption>${buyBtns(n, c, "images/real/" + n + ".jpg", "Recommended sea designs")}</figure>`).join("")}</div>
         <div class="themes">${CONFIG.gallery.filter((t) => t.items.length).map((t) => `
           <h3 class="theme-h">${esc(t.theme)}</h3>
-          <div class="gallery">${t.theme === "Keychains" ? presets.map((p) => `<figure class="ready"><a href="design.html?preset=${p.id}"><img src="${p.photo}" alt="${esc(p.name)}" decoding="async"></a><figcaption><strong>${esc(p.name)}</strong><span>${esc(tr(p, "blurb"))}</span></figcaption>${buyBtns(p.id, p.name, p.photo, "preset")}</figure>`).join("") : ""}${t.items.map((it, ix) => (it.sub && it.sub !== (t.items[ix - 1] || {}).sub ? `</div><h4 class="sub-h">${esc(it.sub)}</h4><div class="gallery">` : "") + (it.video
-            ? `<figure><video src="${it.video}" poster="${it.poster || ""}" autoplay muted loop playsinline></video><figcaption><strong>${esc(it.cap)}</strong></figcaption>${buyBtns((it.img || it.cap).replace(/\W+/g, "-"), it.cap, it.img || it.poster, t.theme)}</figure>`
-            : `<figure><img src="${it.img}" alt="${esc(it.cap)}" decoding="async"><figcaption><strong>${esc(it.cap)}</strong></figcaption>${buyBtns(it.img.replace(/\W+/g, "-"), it.cap, it.img, t.theme)}</figure>`)).join("")}</div>`).join("")}
+          <div class="gallery">${t.theme === "Keychains" ? presets.map((p) => `<figure class="ready"><a href="design.html?preset=${p.id}"><img src="${p.photo}" alt="${esc(p.name)}" decoding="async"></a><figcaption><strong>${esc(p.name)}</strong>${priceTag(p)}<span>${esc(tr(p, "blurb"))}</span></figcaption>${buyBtns(p.id, p.name, p.photo, "preset")}</figure>`).join("") : ""}${t.items.map((it, ix) => (it.sub && it.sub !== (t.items[ix - 1] || {}).sub ? `</div><h4 class="sub-h">${esc(it.sub)}</h4><div class="gallery">` : "") + (it.video
+            ? `<figure><video src="${it.video}" poster="${it.poster || ""}" autoplay muted loop playsinline></video><figcaption><strong>${esc(it.cap)}</strong>${priceTag(it)}</figcaption>${buyBtns((it.img || it.cap).replace(/\W+/g, "-"), it.cap, it.img || it.poster, t.theme)}</figure>`
+            : `<figure><img src="${it.img}" alt="${esc(it.cap)}" decoding="async"><figcaption><strong>${esc(it.cap)}</strong>${priceTag(it)}</figcaption>${buyBtns(it.img.replace(/\W+/g, "-"), it.cap, it.img, t.theme)}</figure>`)).join("")}</div>`).join("")}
         </div>
       </div>
     </section>
@@ -195,6 +196,17 @@ function renderHome() {
           <h2>${H("storyTitle")}</h2>
           <p>${H("storyP1")}</p>
           <p>${H("storyP2")}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section delivery" id="delivery">
+      <div class="wrap">
+        <h2>${H("delivTitle")}</h2>
+        <div class="deliv-grid">
+          <div class="deliv"><span class="deliv-ic" aria-hidden="true">⏳</span><h3>${H("deliv1T", { time: tr(CONFIG, "readyTime") })}</h3><p>${H("a1")}</p></div>
+          <div class="deliv"><span class="deliv-ic" aria-hidden="true">📦</span><h3>${H("deliv2T")}</h3><p>${esc(tr(CONFIG.delivery || {}, "pickup") || H("how4P"))}</p></div>
+          <div class="deliv"><span class="deliv-ic" aria-hidden="true">💳</span><h3>${H("deliv3T")}</h3><p>${esc(tr(CONFIG.delivery || {}, "payment") || H("a2"))}</p></div>
         </div>
       </div>
     </section>
@@ -441,6 +453,8 @@ const fullOf = (u) => u.replace(/^images\/real\/([^\/]+\.jpg)$/, "images/real/fu
   const EXT = ["jpg", "jpeg", "png", "webp"], MAX = 8, cache = {};
   const probe = (url) => cache[url] || (cache[url] = new Promise((res) => { const im = new Image(); im.onload = () => res(true); im.onerror = () => res(false); im.src = url; }));
   async function anglesOf(src) {
+    // photos.js lists every extra angle, so the browser doesn't have to guess file names
+    if (typeof PHOTO_ANGLES !== "undefined") return [src].concat(PHOTO_ANGLES[src] || []);
     const m = src.match(/^(.*?)(?:-\d+)?\.(\w+)$/); if (!m) return [src];
     const out = [src];
     for (let n = 2; n <= MAX; n++) {

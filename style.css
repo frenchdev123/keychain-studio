@@ -1449,3 +1449,16 @@ body[data-page="design"] .cards.presets, .cards:has(.rl-pair) { grid-template-co
 .photo-card.first { grid-column: 1 / -1; border: 2px solid #E8934A; box-shadow: 0 10px 28px rgba(232,147,74,.28); }
 .photo-card .photo-badge { position: absolute; top: -12px; left: 16px; background: #E8934A; color: #fff; font: 700 .72rem Jost, sans-serif; letter-spacing: .06em; text-transform: uppercase; padding: 4px 12px; border-radius: 999px; }
 .cards.first-row { grid-template-columns: 1fr; margin-bottom: 18px; }
+
+/* ---------- Phone header: keep the cart and EN/TH/RU on screen ---------- */
+@media (max-width: 599px) {
+  .nav-row { gap: 8px; }
+  .wordmark { font-size: 1.25rem; }
+  .nav-end { gap: 6px; }
+  .cart-btn { margin-right: 0; padding: 5px 9px; }
+  .langs { gap: 0; }
+  .langs button { padding: 6px 4px; }
+}
+@media (max-width: 359px) { .wordmark { font-size: 1.05rem; } .nav-row { padding: 0 12px; } }
+/* hint that the designer step bar scrolls sideways on phones */
+@media (max-width: 899px) { .steps { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 28px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 28px), transparent 100%); } }
